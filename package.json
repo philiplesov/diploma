@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bluetooth-serial-port": "^2.1.2",
     "ws": "^2.2.2"
   }
 }
