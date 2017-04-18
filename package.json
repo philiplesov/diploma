@@ -11,7 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "bluetooth-serial-port": "^2.1.2",
-    "mysql": "file:node_modules/mysql",
+    "mysql": "^2.13.0",
     "ws": "^2.2.2"
   }
 }
