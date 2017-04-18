@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/p5.min.js"></script>
+ 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/addons/p5.dom.js"></script>
+		<script type="text/javascript">
+
+			var text;     // variable for the text div you'll create
+			var socket = new WebSocket("ws://localhost:8081");
+			
+			function setup() {
+				// The socket connection needs two event listeners:
+				socket.onopen = openSocket;
+				socket.onmessage = showData;
+
+				// make a new div and position it at 10, 10:
+				text = createDiv("Sensor reading:");
+				text.position(10,10);
+			}
+
+			function openSocket() {
+				text.html("Socket open");
+			}
+
+			function showData(result) {
+				// when the server returns, show the result in the div:
+				text.html("Sensor reading:" + result.data);
+			}
+
+		</script>
+
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+	asd
+	</body>
+</html>
