@@ -1,12 +1,12 @@
 var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'diploma'
-});
+// var connection = mysql.createConnection({
+//   host     : 'localhost',
+//   user     : 'root',
+//   password : 'root',
+//   database : 'diploma'
+// });
 
-connection.connect();
+// connection.connect();
 
 var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
 var WebSocketServer = require('ws');
@@ -25,6 +25,10 @@ function handleConnection(client) {
     console.log("New Connection"); // you have a new client
     connections.push(client); // add this client to the connections array
 
+    client.on('message', function incoming(message) {
+        console.log('received: %s', message);
+    });
+
     client.on('close', function() { // when a client closes its connection
         console.log("connection closed"); // print it out
         var position = connections.indexOf(client); // get the client's position in the array
@@ -36,6 +40,7 @@ function handleConnection(client) {
 function broadcast(data) {
     for (myConnection in connections) {   // iterate over the array of connections
         connections[myConnection].send(data); // send the data to each connection
+        console.log(data);
     }
 }
 
@@ -47,31 +52,36 @@ function saveLatestData(data) {
     }
 }
 
+setInterval(function(){
+    //console.log('testmeh');
+    saveLatestData('testmeh');
+}, 300);
+
 //Bluetooth
-btSerial.on('found', function(address, name) {
-    console.log(address, name);
-    btSerial.findSerialPortChannel(address, function(channel) {
-        btSerial.connect(address, channel, function() {
-            console.log('connected');
-            var buffer = Buffer.alloc(10);
-            btSerial.on('data', function(buffer) {
-                console.log(buffer.toString('utf-8'));
-                console.log('=================');
-                saveLatestData(buffer.toString('utf-8'));
-                // connection.query("INSERT INTO `diploma-test` (`gps-data`) values ('" + buffer.toString('utf-8') + "')", function(err, rows, fields) {
-                //     if (err)
-                //         console.log('Error while performing Query: ',err);
-                // });
-            });
-        }, function () {
-            console.log('cannot connect');
-        });
+// btSerial.on('found', function(address, name) {
+//     console.log(address, name);
+//     btSerial.findSerialPortChannel(address, function(channel) {
+//         btSerial.connect(address, channel, function() {
+//             console.log('connected');
+//             var buffer = Buffer.alloc(10);
+//             btSerial.on('data', function(buffer) {
+//                 console.log(buffer.toString('utf-8'));
+//                 console.log('=================');
+//                 saveLatestData(buffer.toString('utf-8'));
+//                 // connection.query("INSERT INTO `diploma-test` (`gps-data`) values ('" + buffer.toString('utf-8') + "')", function(err, rows, fields) {
+//                 //     if (err)
+//                 //         console.log('Error while performing Query: ',err);
+//                 // });
+//             });
+//         }, function () {
+//             console.log('cannot connect');
+//         });
 
-        // close the connection when you're ready
-        btSerial.close();
-    }, function() {
-        console.log('found nothing');
-    });
-});
+//         // close the connection when you're ready
+//         btSerial.close();
+//     }, function() {
+//         console.log('found nothing');
+//     });
+// });
 
-btSerial.inquire();
+// btSerial.inquire();

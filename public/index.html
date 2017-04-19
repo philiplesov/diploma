@@ -1,38 +1,57 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/p5.min.js"></script>
- 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.8/addons/p5.dom.js"></script>
-		<script type="text/javascript">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="description" content="Sensor Reading Web App">
+        <meta name="keywords" content="Sensor, WebSocket, Bluetooth">
+        <meta name="author" content="Philip Lesov">
+        <title>Sensor Reading Web App</title>
 
-			var text;     // variable for the text div you'll create
-			var socket = new WebSocket("ws://localhost:8081");
-			
-			function setup() {
-				// The socket connection needs two event listeners:
-				socket.onopen = openSocket;
-				socket.onmessage = showData;
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
 
-				// make a new div and position it at 10, 10:
-				text = createDiv("Sensor reading:");
-				text.position(10,10);
-			}
+        <link rel="stylesheet" href="css/styles.css">
 
-			function openSocket() {
-				text.html("Socket open");
-			}
+        <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-			function showData(result) {
-				// when the server returns, show the result in the div:
-				text.html("Sensor reading:" + result.data);
-			}
+        <script type="text/javascript" src="js/functions.js"></script>
+    </head>
+    <body>
 
-		</script>
+        <div class="container">
+            <div class="header clearfix">
+                <nav>
+                  <ul class="nav nav-pills float-right">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Contact</a>
+                    </li>
+                  </ul>
+                </nav>
+                <h3 class="text-muted">Sensor Reading Web App</h3>
+            </div>
 
-		<meta charset="utf-8">
-		<title></title>
-	</head>
-	<body>
-	asd
-	</body>
+            <div class="row marketing">
+                <div class="col-lg-12">
+                    <input type="button" id="bltSwitch" value="Turn Sensor ON" />
+                </div>
+                <div class="col-lg-12">
+                    <span>Sensor Readings:</span>
+                    <span id="readings"></span>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <p>Sensor Reading Web App 2017</p>
+            </footer>
+
+        </div> <!-- /container -->
+
+    </body>
 </html>
