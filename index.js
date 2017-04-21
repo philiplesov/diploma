@@ -1,32 +1,23 @@
-var mysql      = require('mysql');
-// var connection = mysql.createConnection({
-//   host     : 'localhost',
-//   user     : 'root',
-//   password : 'root',
-//   database : 'diploma'
-// });
+init_module = require('./init.js');
 
-// connection.connect();
-
-var btSerial = new (require('bluetooth-serial-port')).BluetoothSerialPort();
-var WebSocketServer = require('ws');
-
-var SERVER_PORT = 8081;               // port number for the webSocket server
-var wss = new WebSocketServer.Server({
-    perMessageDeflate: false,
-    port: SERVER_PORT
-}); // the webSocket server
+var app_config = init_module.app_config;
+var bluetooth = init_module.bluetooth;
+var webSocket = init_module.webSocket;
+var database = init_module.database;
 
 var connections = new Array;          // list of connections to the server
 
-wss.on('connection', handleConnection);
+var intervalID;
+
+webSocket.wss.on('connection', handleConnection);
  
 function handleConnection(client) {
     console.log("New Connection"); // you have a new client
     connections.push(client); // add this client to the connections array
 
     client.on('message', function incoming(message) {
-        console.log('received: %s', message);
+        console.log('Message received: %s', message);
+        processMessageFromWebSocket(message);
     });
 
     client.on('close', function() { // when a client closes its connection
@@ -52,36 +43,76 @@ function saveLatestData(data) {
     }
 }
 
-setInterval(function(){
-    //console.log('testmeh');
-    saveLatestData('testmeh');
-}, 300);
+function processMessageFromWebSocket(message) {
+    if(!message) {
+        return;
+    }
+
+    switch(message) {
+        case 'turn-on':
+            bluetooth.btSerial.inquire();
+            return;
+        case 'turn-off':
+            bluetooth.btSerial.close();
+            return;
+        case 'test-turn-on':
+            setTestInterval();
+            return;
+        case 'test-turn-off':
+            stopTestInterval();
+            return;
+        default:
+            console.log(message);
+    }
+}
+
+function randomId() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
+//Send data periodically to client
+function setTestInterval() {
+    intervalID = setInterval(function(){
+        saveLatestData(randomId());
+    }, 1000);
+}
+
+// Stop sending test data to client
+function stopTestInterval() {
+    clearInterval(intervalID);
+}
 
 //Bluetooth
-// btSerial.on('found', function(address, name) {
-//     console.log(address, name);
-//     btSerial.findSerialPortChannel(address, function(channel) {
-//         btSerial.connect(address, channel, function() {
-//             console.log('connected');
-//             var buffer = Buffer.alloc(10);
-//             btSerial.on('data', function(buffer) {
-//                 console.log(buffer.toString('utf-8'));
-//                 console.log('=================');
-//                 saveLatestData(buffer.toString('utf-8'));
-//                 // connection.query("INSERT INTO `diploma-test` (`gps-data`) values ('" + buffer.toString('utf-8') + "')", function(err, rows, fields) {
-//                 //     if (err)
-//                 //         console.log('Error while performing Query: ',err);
-//                 // });
-//             });
-//         }, function () {
-//             console.log('cannot connect');
-//         });
+bluetooth.btSerial.on('found', function(address, name) {
+    console.log(address, name);
+    bluetooth.btSerial.findSerialPortChannel(address, function(channel) {
+        bluetooth.btSerial.connect(address, channel, function() {
+            console.log('connected');
+            var buffer = Buffer.alloc(10);
+            bluetooth.btSerial.on('data', function(buffer) {
+                console.log(buffer.toString('utf-8'));
+                console.log('=================');
+                saveLatestData(buffer.toString('utf-8'));
+                // connection.query("INSERT INTO `diploma-test` (`gps-data`) values ('" + buffer.toString('utf-8') + "')", function(err, rows, fields) {
+                //     if (err)
+                //         console.log('Error while performing Query: ',err);
+                // });
+            });
+        }, function () {
+            console.log('cannot connect');
+        });
 
-//         // close the connection when you're ready
-//         btSerial.close();
-//     }, function() {
-//         console.log('found nothing');
-//     });
-// });
+        // close the connection when you're ready
+        bluetooth.btSerial.close();
+    }, function() {
+        console.log('found nothing');
+    });
+});
 
 // btSerial.inquire();
