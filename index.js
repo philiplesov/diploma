@@ -8,10 +8,6 @@ var functions = init_module.functions;
 
 webSocket.wss.on('connection', handleConnection);
 
-// console.log(Date.now());
-// date = new Date(Date.now());
-// console.log(date.getFullYear(), date.getMonth()+1, date.getDate());
-
 function handleConnection(client) {
     console.log("New Connection"); // you have a new client
     webSocket.connections.push(client); // add this client to the connections array
@@ -54,32 +50,3 @@ function processMessageFromWebSocket(message) {
             console.log(message);
     }
 }
-
-//Bluetooth
-bluetooth.btSerial.on('found', function(address, name) {
-    console.log(address, name);
-    bluetooth.btSerial.findSerialPortChannel(address, function(channel) {
-        bluetooth.btSerial.connect(address, channel, function() {
-            console.log('connected');
-            var buffer = Buffer.alloc(10);
-            bluetooth.btSerial.on('data', function(buffer) {
-                console.log(buffer.toString('utf-8'));
-                console.log('=================');
-                webSocket.saveLatestData(buffer.toString('utf-8'));
-                // connection.query("INSERT INTO `diploma-test` (`gps-data`) values ('" + buffer.toString('utf-8') + "')", function(err, rows, fields) {
-                //     if (err)
-                //         console.log('Error while performing Query: ',err);
-                // });
-            });
-        }, function () {
-            console.log('cannot connect');
-        });
-
-        // close the connection when you're ready
-        bluetooth.btSerial.close();
-    }, function() {
-        console.log('found nothing');
-    });
-});
-
-// btSerial.inquire();
