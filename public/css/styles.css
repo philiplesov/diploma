@@ -77,3 +77,30 @@ body {
       border-bottom: 0;
     }
 }
+
+#appContainer.container {
+    max-width: 1140px;
+}
+
+#appContainer .dynatable-pagination-links a {
+    color: #0275d8;
+    text-decoration: none;
+}
+
+#appContainer .dynatable-pagination-links a:hover {
+    color: #014c8c;
+} 
+
+#appContainer .dynatable-head a {
+    color: #0275d8;
+}
+
+#appContainer .dynatable-active-page, #appContainer .dynatable-active-page:hover {
+    background: #0275d8;
+    border-radius: 5px;
+    color: #fff !important;
+}
+
+.dynatable-pagination-links a.dynatable-disabled-page, .dynatable-pagination-links a.dynatable-disabled-page:hover {
+    color: #98b5ce;
+}
