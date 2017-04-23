@@ -31,7 +31,6 @@ function handleConnection(client) {
 function broadcast(data) {
     for (myConnection in connections) {   // iterate over the array of connections
         connections[myConnection].send(data); // send the data to each connection
-        console.log(data);
     }
 }
 
@@ -48,18 +47,21 @@ function processMessageFromWebSocket(message) {
         return;
     }
 
-    switch(message) {
-        case 'turn-on':
+    switch(true) {
+        case message == 'turn-on':
             bluetooth.btSerial.inquire();
             return;
-        case 'turn-off':
+        case message == 'turn-off':
             bluetooth.btSerial.close();
             return;
-        case 'test-turn-on':
+        case message == 'test-turn-on':
             setTestInterval();
             return;
-        case 'test-turn-off':
+        case message == 'test-turn-off':
             stopTestInterval();
+            return;
+        case message.indexOf('get-readings') !== -1:
+            populateReadings(message);
             return;
         default:
             console.log(message);
@@ -86,6 +88,19 @@ function setTestInterval() {
 // Stop sending test data to client
 function stopTestInterval() {
     clearInterval(intervalID);
+}
+
+function populateReadings(message) {
+    database.connection.query("SELECT * FROM diploma.`diploma-test`;", function(err, rows, fields) {
+        if (err)
+            console.log('Error while performing Query: ',err);
+
+        var results = [];
+        for (var i in rows) {
+            results.push(rows[i]);
+        }
+        saveLatestData(JSON.stringify(results));
+    });
 }
 
 //Bluetooth
