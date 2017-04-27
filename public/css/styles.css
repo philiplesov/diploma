@@ -104,3 +104,13 @@ body {
 .dynatable-pagination-links a.dynatable-disabled-page, .dynatable-pagination-links a.dynatable-disabled-page:hover {
     color: #98b5ce;
 }
+
+.get-readings-btn {
+    background: #0275d8;
+    color: #fff;
+    cursor: pointer;
+}
+
+.get-readings-btn:hover {
+    background: #0265bb;
+}

@@ -8,16 +8,10 @@
         <title>Sensor Reading Web App</title>
 
         <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
 
         <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" type="text/css" href="css/jquery.dynatable.css">
-
-        <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
-        <script type="text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/jquery.dynatable.js"></script>
-
-        <script type="text/javascript" src="js/readings_functions.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/jquery.datetimepicker.css">
     </head>
     <body>
 
@@ -39,6 +33,14 @@
                 <h3 class="text-muted">Sensor Reading Web App</h3>
             </div>
 
+            <div class="row datepick-container">
+                <div class="col-lg-12 col-md-12">
+                    <input type="text" class="datepicker" value="" id="startDate"/>
+                    <input type="text" class="datepicker" value="" id="endDate"/>
+                    <button type="button" class="btn get-readings-btn">Show data</button>
+                </div>
+            </div>
+
             <div class="row marketing">
                 <table id="readingsTable" class="col-lg-12 table table-bordered">
                   <thead>
@@ -58,4 +60,10 @@
         </div> <!-- /container -->
 
     </body>
+    <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery.dynatable.js"></script>
+    <script type="text/javascript" src="js/jquery.datetimepicker.full.min.js"></script>
+
+    <script type="text/javascript" src="js/readings_functions.js"></script>
 </html>
