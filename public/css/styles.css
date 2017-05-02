@@ -114,3 +114,24 @@ body {
 .get-readings-btn:hover {
     background: #0265bb;
 }
+
+.filter-contents {
+    padding: 15px 0px;
+    border-bottom: 2px solid #e5e5e5;
+    border-top: 2px solid #e5e5e5;
+}
+
+.filter-contents .heading {
+    color : #636c72;
+    font-weight: bold;
+    font-size:20px;
+}
+
+.filter-contents .filter-block {
+    float:left;
+    margin-right:10px;
+}
+
+.filter-contents .filter-block button {
+    margin-top: -5px;
+}

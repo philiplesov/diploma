@@ -9,15 +9,25 @@ function openSocket() {
 }
 
 function showData(result) {
-	var test = [{"band": "Weezer","song": "El Scorcho"},{"band": "Chevelle","song": "Family System"}];
-	asd = JSON.parse(result.data);
-	$('#readingsTable').dynatable({
-	  dataset: {
-	    records: asd
-	  }
-	});
-	// when the server returns, show the result in the div:
-	readings.html(result.data);
+	// when the server returns, show the result in table
+	var dynatable = $('#readingsTable').dynatable({ 
+    	dataset: { records: JSON.parse(result.data) } }, 
+    	{ features: { pushState: false }}).data("dynatable");
+    dynatable.settings.dataset.originalRecords =  JSON.parse(result.data);
+    dynatable.process(); 
+}
+
+function toTimestamp(datetime) {
+	// Date d-m-Y H:i to timestamp
+	var dateString = datetime,
+    dateTimeParts = dateString.split(' '),
+    timeParts = dateTimeParts[1].split(':'),
+    dateParts = dateTimeParts[0].split('-'),
+    date;
+
+	date = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
+
+	return date.getTime();
 }
 
 $(document).ready(function() {
@@ -25,17 +35,18 @@ $(document).ready(function() {
 	$('.datepicker').datetimepicker({
 		dayOfWeekStart : 1,
 		lang:'en',
+		format:'d-m-Y H:i',
 	});
 
 	$('.get-readings-btn').click(function() {
+		// Show records after datetime filters applied
 		var startDate = $('#startDate')[0].value;
 		var endDate = $('#endDate')[0].value;
 
-		if(!startDate || !endDate) {
-			return;
-		}
-		
-		socket.send('get-readings-0-20');
+		startDate = startDate ? toTimestamp(startDate) : 0;
+		endDate = endDate ? toTimestamp(endDate) : 0;
+
+		socket.send('get-readings-' + startDate + '-' + endDate);
 	});
 
 });
