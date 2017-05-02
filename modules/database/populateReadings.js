@@ -4,8 +4,9 @@ var webSocket = require('../webSocket.js');
 exports.populate = function(message) {
     var messageContents = message.split("-");
 
-    var startDate = parseInt(messageContents[2]),
-        endDate = parseInt(messageContents[3])
+    var dbTable = messageContents[2],
+        startDate = parseInt(messageContents[3]),
+        endDate = parseInt(messageContents[4])
 
     var selectClause = 'SELECT * FROM diploma.`diploma-test`',
         whereClause = ' WHERE 1=1';
@@ -18,7 +19,7 @@ exports.populate = function(message) {
     }
 
     var query = selectClause + whereClause;
-    console.log(query);
+
 	database.connection.query(query, function(err, rows, fields) {
         if (err)
             console.log('Error while performing Query: ',err);

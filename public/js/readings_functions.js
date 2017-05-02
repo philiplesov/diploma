@@ -40,13 +40,19 @@ $(document).ready(function() {
 
 	$('.get-readings-btn').click(function() {
 		// Show records after datetime filters applied
+		var socketMessage = 'get-readings-';
+
 		var startDate = $('#startDate')[0].value;
 		var endDate = $('#endDate')[0].value;
+		var dbType = $('#dbType').val();
 
 		startDate = startDate ? toTimestamp(startDate) : 0;
 		endDate = endDate ? toTimestamp(endDate) : 0;
 
-		socket.send('get-readings-' + startDate + '-' + endDate);
+		socketMessage += dbType + '-';
+		socketMessage += startDate + '-' + endDate;
+
+		socket.send(socketMessage);
 	});
 
 });
