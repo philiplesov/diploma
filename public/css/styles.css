@@ -135,3 +135,7 @@ body {
 .filter-contents .filter-block button {
     margin-top: -5px;
 }
+
+#appContainer [id^=readingsTableContainer] {
+    display: none;
+}

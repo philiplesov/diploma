@@ -9,12 +9,17 @@ function openSocket() {
 }
 
 function showData(result) {
+	serverReturn = JSON.parse(result.data);
+	readingsTable = '#readingsTable' + serverReturn.type;
+
 	// when the server returns, show the result in table
-	var dynatable = $('#readingsTable').dynatable({ 
+	var dynatable = $(readingsTable).dynatable({ 
     	dataset: { records: JSON.parse(result.data) } }, 
     	{ features: { pushState: false }}).data("dynatable");
-    dynatable.settings.dataset.originalRecords =  JSON.parse(result.data);
-    dynatable.process(); 
+    dynatable.settings.dataset.originalRecords = serverReturn.data;
+    dynatable.process();
+
+    $('#readingsTableContainer' + serverReturn.type).show();
 }
 
 function toTimestamp(datetime) {
@@ -45,6 +50,12 @@ $(document).ready(function() {
 		var startDate = $('#startDate')[0].value;
 		var endDate = $('#endDate')[0].value;
 		var dbType = $('#dbType').val();
+
+		if(!dbType) {
+			return;
+		}
+
+		$('[id^=readingsTableContainer]').hide();
 
 		startDate = startDate ? toTimestamp(startDate) : 0;
 		endDate = endDate ? toTimestamp(endDate) : 0;

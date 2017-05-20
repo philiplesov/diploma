@@ -54,9 +54,8 @@
                                 <div class="filter-block">
                                     <label>Type of Data:</label>
                                     <select id="dbType">
-                                        <option value="all">-</option>
-                                        <option value="type1">type1</option>
-                                        <option value="type2">type2</option>
+                                        <option value="GPGGA">$GPGGA</option>
+                                        <option value="GPGSA">$GPGSA</option>
                                     </select>
                                 </div>
                             </div>
@@ -70,15 +69,55 @@
                 </div>
             </div>
 
-            <div class="row marketing">
-                <table id="readingsTable" class="col-lg-12 table table-bordered">
-                  <thead>
-                    <th>Id</th>
-                    <th data-dynatable-column="data">Data</th>
-                    <th data-dynatable-column="createdAt">Date of Creation</th>
-                  </thead>
-                  <tbody>
-                  </tbody>
+            <div class="row marketing" id="readingsTableContainerGPGGA">
+                <table id="readingsTableGPGGA" class="col-lg-12 table table-bordered">
+                    <thead>
+                        <th>Id</th>
+                        <th data-dynatable-column="created_at">Created At</th>
+                        <th data-dynatable-column="universal_time">Universal Time</th>
+                        <th data-dynatable-column="latitude">Latitude</th>
+                        <th data-dynatable-column="north_south_indicator">N/S</th>
+                        <th data-dynatable-column="longitude">Longitude</th>
+                        <th data-dynatable-column="east_west_indicator">E/W</th>
+                        <th data-dynatable-column="fixed_pos_indicator">Fixed Position</th>
+                        <th data-dynatable-column="satellite_used">Satellite Used</th>
+                        <th data-dynatable-column="HDOP">HDOP</th>
+                        <th data-dynatable-column="altitude">Altitude</th>
+                        <th data-dynatable-column="altitude_measurement_units">Altitude MU</th>
+                        <th data-dynatable-column="eccentricity">Eccentricity</th>
+                        <th data-dynatable-column="eccentricity_measurement_units">Eccentricity MU</th>
+                        <th data-dynatable-column="correction_limitation">Correlation Limitation</th>
+                        <th data-dynatable-column="correction_id_control_amount">Ctrl Amount</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row marketing" id="readingsTableContainerGPGSA">
+                <table id="readingsTableGPGSA" class="col-lg-12 table table-bordered">
+                    <thead>
+                        <th>Id</th>
+                        <th data-dynatable-column="created_at">Created At</th>
+                        <th data-dynatable-column="mode_1">Mode One</th>
+                        <th data-dynatable-column="sat_used_1">SAT(chnl.1)</th>
+                        <th data-dynatable-column="sat_used_2">(chnl.2)</th>
+                        <th data-dynatable-column="sat_used_3">(chnl.3)</th>
+                        <th data-dynatable-column="sat_used_4">(chnl.4)</th>
+                        <th data-dynatable-column="sat_used_5">(chnl.5)</th>
+                        <th data-dynatable-column="sat_used_6">(chnl.6)</th>
+                        <th data-dynatable-column="sat_used_7">(chnl.7)</th>
+                        <th data-dynatable-column="sat_used_8">(chnl.8)</th>
+                        <th data-dynatable-column="sat_used_9">(chnl.9)</th>
+                        <th data-dynatable-column="sat_used_10">(chnl.10)</th>
+                        <th data-dynatable-column="sat_used_11">(chnl.11)</th>
+                        <th data-dynatable-column="PDOP">PDOP</th>
+                        <th data-dynatable-column="HDOP">HDOP</th>
+                        <th data-dynatable-column="VDOP">VDOP</th>
+                        <th data-dynatable-column="control_amount">Ctrl Amount</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
                 </table>
             </div>
 
