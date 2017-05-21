@@ -56,12 +56,46 @@
                                     <select id="dbType">
                                         <option value="GPGGA">$GPGGA</option>
                                         <option value="GPGSA">$GPGSA</option>
+                                        <option value="GPRMC">$GPRMC</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="filter-block">
                                     <button type="button" class="btn get-readings-btn">Show data</button>
+                                </div>
+                            </div>
+                            <div class="col-lg-12" id="chartDataContainer">
+                                <div class="col-lg-12">
+                                    <div class="row chart-data-block">
+                                        <div class="col-lg-12 head">Chart Settings: </div>
+                                        <div class="col-lg-12 content">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="filter-block">
+                                                        <label>Parameter 1: </label>
+                                                        <select id="selectParam1">
+                                                            <option>-</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="filter-block">
+                                                        <label>Parameter 2: </label>
+                                                        <select id="selectParam2">
+                                                            <option>-</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="filter-block">
+                                                        <button type="button" class="btn btn-success create-chart-btn">Create chart</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <canvas id="myChart" width="931" height="465"></canvas>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -121,6 +155,28 @@
                 </table>
             </div>
 
+            <div class="row marketing" id="readingsTableContainerGPRMC">
+                <table id="readingsTableGPRMC" class="col-lg-12 table table-bordered">
+                    <thead>
+                        <th>Id</th>
+                        <th data-dynatable-column="created_at">Created At</th>
+                        <th data-dynatable-column="universal_time">Universal Time</th>
+                        <th data-dynatable-column="status">Status</th>
+                        <th data-dynatable-column="latitude">Latitude</th>
+                        <th data-dynatable-column="north_south_indicator">N/S</th>
+                        <th data-dynatable-column="longitude">Longitude</th>
+                        <th data-dynatable-column="east_west_indicator">E/W</th>
+                        <th data-dynatable-column="ground_speed">Ground Speed</th>
+                        <th data-dynatable-column="movement_direction">Movement Direction</th>
+                        <th data-dynatable-column="date">Date</th>
+                        <th data-dynatable-column="magnetic_variation">Magnetic Variation</th>
+                        <th data-dynatable-column="control_amount">Control Amount</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
             <footer class="footer">
                 <p>Sensor Reading Web App 2017</p>
             </footer>
@@ -130,6 +186,7 @@
     </body>
     <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../node_modules/chart.js/dist/Chart.js"></script>
     <script type="text/javascript" src="js/jquery.dynatable.js"></script>
     <script type="text/javascript" src="js/jquery.datetimepicker.full.min.js"></script>
 

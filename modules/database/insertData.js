@@ -20,3 +20,10 @@ exports.insertGPGSA = function(gpsReadingContents) {
             console.log('Error while performing Query: ',err);
     });
 }
+
+exports.insertGPRMC = function(gpsReadingContents) {
+    database.connection.query("INSERT INTO `GPRMC` (`universal_time`, `status`, `latitude`, `north_south_indicator`, `longitude`, `east_west_indicator`, `ground_speed`, `movement_direction`, `date`, `magnetic_variation`, `control_amount`, `created_at`) VALUES ('" + gpsReadingContents[1] + "', '" + gpsReadingContents[2] + "', '" + gpsReadingContents[3] + "', '" + gpsReadingContents[4] + "', '" + gpsReadingContents[5] + "', '" + gpsReadingContents[6] + "', '" + gpsReadingContents[7] + "', '" + gpsReadingContents[8] + "', '" + gpsReadingContents[9] + "', '" + gpsReadingContents[10] + "', '" + gpsReadingContents[11] + "', '" + Date.now() + "')", function(err, rows, fields) {
+        if (err)
+            console.log('Error while performing Query: ',err);
+    });
+}

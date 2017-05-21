@@ -4,5 +4,71 @@
 		"user" : "root",
 		"password" : "root",
 		"database" : "diploma"
+	},
+	"public" : {
+		"gpsTypes" : {
+			"GPGGA" : [
+				{
+					"name": "Created At",
+					"value": "created_at"
+				},
+				{
+					"name" : "Universal Time",
+					"value" : "universal_time"
+				},
+				{
+					"name": "Latitude",
+					"value": "latitude"
+				},
+				{
+					"name": "N/S",
+					"value": "north_south_indicator"
+				},
+				{
+					"name": "Longitude",
+					"value": "longitude"
+				},
+				{
+					"name": "E/W",
+					"value": "east_west_indicator"
+				},
+				{
+					"name": "Fixed Position",
+					"value": "fixed_pos_indicator"
+				},
+				{
+					"name": "Satellite Used",
+					"value": "satellite_used"
+				},
+				{
+					"name": "HDOP",
+					"value": "HDOP"
+				},
+				{
+					"name": "Altitude",
+					"value": "altitude"
+				},
+				{
+					"name": "Altitude MU",
+					"value": "altitude_measurement_units"
+				},
+				{
+					"name": "Eccentricity",
+					"value": "eccentricity"
+				},
+				{
+					"name": "Eccentricity MU",
+					"value": "eccentricity_measurement_units"
+				},
+				{
+					"name": "Correlation Limitation",
+					"value": "correction_limitation"
+				},
+				{
+					"name": "Ctrl Amount",
+					"value": "correction_id_control_amount"
+				}
+			]
+		}
 	}
 }

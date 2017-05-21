@@ -10,5 +10,8 @@ exports.allocate = function(gpsReading) {
 		case 'GPGSA':
 			dbInsert.insertGPGSA(gpsReadingContents);
 			break;
+		case 'GPRMC':
+			dbInsert.insertGPRMC(gpsReadingContents);
+			break;
 	}
 }

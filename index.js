@@ -46,6 +46,9 @@ function processMessageFromWebSocket(message) {
             readings = require('./modules/database/populateReadings.js');
             readings.populate(message);
             return;
+        case message == 'get-config':
+            webSocket.saveLatestData(JSON.stringify({'type': 'config', 'data': app_config.public}));
+            return;
         default:
             console.log(message);
     }

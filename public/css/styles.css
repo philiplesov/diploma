@@ -105,10 +105,13 @@ body {
     color: #98b5ce;
 }
 
+.btn {
+    cursor: pointer;
+}
+
 .get-readings-btn {
     background: #0275d8;
     color: #fff;
-    cursor: pointer;
 }
 
 .get-readings-btn:hover {
@@ -119,6 +122,35 @@ body {
     padding: 15px 0px;
     border-bottom: 2px solid #e5e5e5;
     border-top: 2px solid #e5e5e5;
+}
+
+.filter-contents .col-lg-12 {
+    margin-bottom: 10px;
+}
+
+.filter-contents .chart-data-block {
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    background: #f9f9f9;
+}
+
+#chartDataContainer {
+    display: none;
+}
+
+#myChart {
+    display: none;
+}
+
+.filter-contents .chart-data-block .head {
+    color : #636c72;
+    font-weight: bold;
+    font-size:18px;
+    padding-top:10px;
+}
+
+.filter-contents .chart-data-block .content {
+    padding-bottom: 10px;
 }
 
 .filter-contents .heading {
@@ -136,6 +168,6 @@ body {
     margin-top: -5px;
 }
 
-#appContainer [id^=readingsTableContainer] {
+#appContainer   [id^=readingsTableContainer] {
     display: none;
 }
