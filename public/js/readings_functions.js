@@ -70,6 +70,14 @@ function createChart(params) {
                 pointHoverBackgroundColor: "rgba(92,184,92)",
                 pointHoverBorderColor: "rgba(92,184,92)",
             }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    type: 'linear',
+                    position: 'bottom'
+                }]
+            }
         }
     });
 
