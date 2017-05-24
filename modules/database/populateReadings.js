@@ -1,6 +1,5 @@
 var database = require('../database.js');
 var webSocket = require('../webSocket.js');
-var functions = require('../functions.js');
 
 exports.populate = function(message) {
     var messageContents = message.split("-");
@@ -31,12 +30,6 @@ exports.populate = function(message) {
         		var date = new Date(parseInt(rows[i].created_at));
         		rows[i].created_at = date.getDate() + '-' + (parseInt(date.getMonth()) + 1) + '-'+date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
         	}
-            if(rows[i].latitude) {
-                rows[i].latitude = functions.convertToDecimal(rows[i].latitude);
-            }
-            if(rows[i].longitude) {
-                rows[i].longitude = functions.convertToDecimal(rows[i].longitude);
-            }
             results.push(rows[i]);
         }
 

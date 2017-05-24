@@ -68,6 +68,56 @@
 					"name": "Ctrl Amount",
 					"value": "correction_id_control_amount"
 				}
+			],
+			"GPRMC" : [
+				{
+					"name": "Created At",
+					"value": "created_at"
+				},
+				{
+					"name" : "Universal Time",
+					"value" : "universal_time"
+				},
+				{
+					"name" : "Status",
+					"value" : "status"
+				},
+				{
+					"name": "Latitude",
+					"value": "latitude"
+				},
+				{
+					"name": "N/S",
+					"value": "north_south_indicator"
+				},
+				{
+					"name": "Longitude",
+					"value": "longitude"
+				},
+				{
+					"name": "E/W",
+					"value": "east_west_indicator"
+				},
+				{
+					"name": "Ground Speed",
+					"value": "ground_speed"
+				},
+				{
+					"name": "Movement Direction",
+					"value": "movement_direction"
+				},
+				{
+					"name": "Date",
+					"value": "date"
+				},
+				{
+					"name": "Magnetic Variation",
+					"value": "magnetic_variation"
+				},
+				{
+					"name": "Ctrl Amount",
+					"value": "correction_id_control_amount"
+				}
 			]
 		}
 	}
