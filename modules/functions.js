@@ -3,13 +3,21 @@ var webSocket = require('./webSocket.js');
 exports.intervalID;
 
 exports.setTestInterval = function() {
-	exports.intervalID = setInterval(function(){
+    exports.intervalID = setInterval(function(){
         webSocket.saveLatestData(randomId());
     }, 1000);
 }
 
 exports.clearInterval = function() {
-	clearInterval(exports.intervalID);
+    clearInterval(exports.intervalID);
+}
+
+exports.convertToDecimal = function(nmeaFormat) {
+    var posOfDot = nmeaFormat.indexOf(".");
+    var degrees = parseFloat(nmeaFormat.substring(0, posOfDot-2));
+    var minutes = parseFloat(nmeaFormat.substring(posOfDot-2));
+    console.log('lat ',nmeaFormat, 'deg: ', degrees, 'min: ', minutes);
+    return degrees + minutes/60;
 }
 
 function randomId() {
