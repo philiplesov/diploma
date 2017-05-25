@@ -24,11 +24,22 @@ function showData(result) {
     // Set global serverData to contain newest returned server data
     serverData = serverReturn.data;
 
+    var tableResults = [];
+    for (var i in serverData) {
+    	tableResults.push(JSON.parse(JSON.stringify(serverData[i])));
+        if(tableResults[i].universal_time) {
+            tableResults[i].universal_time = convertToPrettyTime(tableResults[i].universal_time);
+        }
+    	if(tableResults[i].created_at) {
+    		tableResults[i].created_at = convertToPrettyDateTime(tableResults[i].created_at);
+    	}
+    }
+
     // when the server returns, show the result in table
     var dynatable = $(readingsTable).dynatable({ 
-        dataset: { records: JSON.parse(result.data) } }, 
+        dataset: { records: tableResults } }, 
         { features: { pushState: false }}).data("dynatable");
-    dynatable.settings.dataset.originalRecords = serverData;
+    dynatable.settings.dataset.originalRecords = tableResults;
     dynatable.process();
 
     $('#readingsTableContainer' + serverReturn.type).show();
@@ -95,6 +106,15 @@ function toTimestamp(datetime) {
     date = new Date(dateParts[2], parseInt(dateParts[1], 10) - 1, dateParts[0], timeParts[0], timeParts[1]);
 
     return date.getTime();
+}
+
+function convertToPrettyTime(time) {
+	return time.substring(0,2) + ":" + time.substring(2,4) + ":" + time.substring(4,6);
+}
+
+function convertToPrettyDateTime(datetime) {
+	var date = new Date(parseInt(datetime));
+    return date.getDate() + '-' + (parseInt(date.getMonth()) + 1) + '-'+date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
 }
 
 $(document).ready(function() {

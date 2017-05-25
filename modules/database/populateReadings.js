@@ -24,16 +24,7 @@ exports.populate = function(message) {
         if (err)
             console.log('Error while performing Query: ',err);
 
-        var results = [];
-        for (var i in rows) {
-        	if(rows[i].created_at) {
-        		var date = new Date(parseInt(rows[i].created_at));
-        		rows[i].created_at = date.getDate() + '-' + (parseInt(date.getMonth()) + 1) + '-'+date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
-        	}
-            results.push(rows[i]);
-        }
-
-        webSocket.saveLatestData(JSON.stringify({'type': dbTable, 'data':results}));
+        webSocket.saveLatestData(JSON.stringify({'type': dbTable, 'data': rows}));
     });
 }
 
