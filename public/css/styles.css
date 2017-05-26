@@ -138,7 +138,7 @@ body {
     display: none;
 }
 
-#myChart {
+#chartsHolder [id^=myChart] {
     display: none;
 }
 
@@ -168,6 +168,6 @@ body {
     margin-top: -5px;
 }
 
-#appContainer   [id^=readingsTableContainer] {
+#appContainer [id^=readingsTableContainer] {
     display: none;
 }

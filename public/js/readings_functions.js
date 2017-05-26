@@ -4,6 +4,10 @@ var socket = new WebSocket("ws://localhost:8081");
 var config;
 var serverData;
 
+var chartCount = 0;
+var chartTemplate = "<canvas id='myChartNO' width='931' height='465'></canvas>";
+var chartBaseSelector = "#myChart";
+
 socket.onopen = openSocket;
 socket.onmessage = showData;
 
@@ -51,14 +55,18 @@ function showData(result) {
         $('#selectParam2').append($("<option></option>").attr("value",selectValues[key].value).text(selectValues[key].name));  
     }
 
+    $(chartBaseSelector + chartCount).hide();
     $('#chartDataContainer').slideDown();
 }
 
 function createChart(params) {
+	chartCount++;
+
+	// Check data and parse it to be given to Chart.js
     var data = [];
     for (key in serverData) {
         var obj = {};
-        if(isNaN(parseFloat(serverData[key][params.param1.value])) || !isFinite(serverData[key][params.param1.value]) || isNaN(parseFloat(serverData[key][params.param2.value])) || !isFinite(serverData[key][params.param2.value])) {
+        if (isNaN(parseFloat(serverData[key][params.param1.value])) || !isFinite(serverData[key][params.param1.value]) || isNaN(parseFloat(serverData[key][params.param2.value])) || !isFinite(serverData[key][params.param2.value])) {
             console.log('not number');
             return;
         }
@@ -67,15 +75,25 @@ function createChart(params) {
         data.push(obj);
     }
 
+    // Set flags if any Datetime fields in chart
     var xtime, ytime = false;
-    if(params.param1.value == 'created_at' || params.param1.value == 'universal_time') {
+    if (params.param1.value == 'created_at' || params.param1.value == 'universal_time') {
         xtime = params.param1.value;
     }
-    if(params.param2.value == 'created_at' || params.param2.value == 'universal_time') {
+    if (params.param2.value == 'created_at' || params.param2.value == 'universal_time') {
         ytime = params.param2.value;
     }
 
-    var ctx = document.getElementById("myChart");
+    // Remove old charts if any
+    if (chartCount > 1) {
+    	$(chartBaseSelector + (chartCount-1)).remove();
+    	$(".chartjs-hidden-iframe").remove();
+
+    	newChartTemplate = chartTemplate.replace("NO", chartCount);
+    	$("#chartsHolder").append(newChartTemplate);
+    }
+    
+    var ctx = $(chartBaseSelector + chartCount);
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
@@ -98,7 +116,7 @@ function createChart(params) {
                     ticks: {
                         // Transform time to readable
                         callback: function(value, index, values) {
-                            if(xtime) {
+                            if (xtime) {
                             	value = makeDateTimePretty(value);
                             }
                             return value;
@@ -109,7 +127,7 @@ function createChart(params) {
                     ticks: {
                         // Transform time to readable
                         callback: function(value, index, values) {
-                            if(ytime) {
+                            if (ytime) {
                             	value = makeDateTimePretty(value);
                             }
                             return value;
@@ -128,10 +146,10 @@ function createChart(params) {
                     	var xLabel = tooltipItems[0].xLabel;
                     	var yLabel = tooltipItems[0].yLabel;
 
-                    	if(xtime) {
+                    	if (xtime) {
                             xLabel = makeDateTimePretty(xLabel);
                         }
-                        if(ytime) {
+                        if (ytime) {
                         	yLabel = makeDateTimePretty(yLabel);
                         }
 
@@ -161,7 +179,7 @@ function toTimestamp(datetime) {
 function makeDateTimePretty(datetime) {
 	datetime = datetime.toString();
 
-	if(datetime.indexOf('.') > -1 || datetime.length == 6) {
+	if (datetime.indexOf('.') > -1 || datetime.length == 6) {
 		return convertToPrettyTime(datetime);
 	}
 
@@ -169,7 +187,7 @@ function makeDateTimePretty(datetime) {
 }
 
 function convertToPrettyTime(time) {
-	if(typeof time != 'string') {
+	if (typeof time != 'string') {
 		time = time.toString();
 	}
 
@@ -198,7 +216,7 @@ $(document).ready(function() {
         var endDate = $('#endDate')[0].value;
         var dbType = $('#dbType').val();
 
-        if(!dbType) {
+        if (!dbType) {
             return;
         }
 
