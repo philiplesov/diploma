@@ -28,10 +28,10 @@ function showData(result) {
     for (var i in serverData) {
     	tableResults.push(JSON.parse(JSON.stringify(serverData[i])));
         if(tableResults[i].universal_time) {
-            tableResults[i].universal_time = convertToPrettyTime(tableResults[i].universal_time);
+            tableResults[i].universal_time = makeDateTimePretty(tableResults[i].universal_time);
         }
     	if(tableResults[i].created_at) {
-    		tableResults[i].created_at = convertToPrettyDateTime(tableResults[i].created_at);
+    		tableResults[i].created_at = makeDateTimePretty(tableResults[i].created_at);
     	}
     }
 
@@ -99,11 +99,7 @@ function createChart(params) {
                         // Transform time to readable
                         callback: function(value, index, values) {
                             if(xtime) {
-                                if(xtime == 'created_at') {
-                                    value = convertToPrettyDateTime(value);
-                                } else {
-                                    value = convertToPrettyTime(value);
-                                }
+                            	value = makeDateTimePretty(value);
                             }
                             return value;
                         }
@@ -114,17 +110,35 @@ function createChart(params) {
                         // Transform time to readable
                         callback: function(value, index, values) {
                             if(ytime) {
-                                if(ytime == 'created_at') {
-                                    value = convertToPrettyDateTime(value);
-                                } else {
-                                    value = convertToPrettyTime(value);
-                                }
+                            	value = makeDateTimePretty(value);
                             }
                             return value;
                         }
                     }
                 }]
-            }
+            },
+            tooltips: {
+            	enabled: true,
+                mode: 'single',
+                callbacks: {
+                    label: function(tooltipItems, data) { 
+                        return '';
+                    },
+                    title: function(tooltipItems, data) {
+                    	var xLabel = tooltipItems[0].xLabel;
+                    	var yLabel = tooltipItems[0].yLabel;
+
+                    	if(xtime) {
+                            xLabel = makeDateTimePretty(xLabel);
+                        }
+                        if(ytime) {
+                        	yLabel = makeDateTimePretty(yLabel);
+                        }
+
+                        return xLabel + '  |  ' + yLabel;
+                    }
+                }
+	        }
         }
     });
 
@@ -144,13 +158,28 @@ function toTimestamp(datetime) {
     return date.getTime();
 }
 
+function makeDateTimePretty(datetime) {
+	datetime = datetime.toString();
+
+	if(datetime.indexOf('.') > -1 || datetime.length == 6) {
+		return convertToPrettyTime(datetime);
+	}
+
+	return convertToPrettyDateTime(datetime)
+}
+
 function convertToPrettyTime(time) {
+	if(typeof time != 'string') {
+		time = time.toString();
+	}
+
 	return time.substring(0,2) + ":" + time.substring(2,4) + ":" + time.substring(4,6);
 }
 
 function convertToPrettyDateTime(datetime) {
 	var date = new Date(parseInt(datetime));
-    return date.getDate() + '-' + (parseInt(date.getMonth()) + 1) + '-'+date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+
+    return date.toLocaleString("en-GB");
 }
 
 $(document).ready(function() {
