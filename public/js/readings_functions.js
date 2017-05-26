@@ -67,6 +67,14 @@ function createChart(params) {
         data.push(obj);
     }
 
+    var xtime, ytime = false;
+    if(params.param1.value == 'created_at' || params.param1.value == 'universal_time') {
+        xtime = params.param1.value;
+    }
+    if(params.param2.value == 'created_at' || params.param2.value == 'universal_time') {
+        ytime = params.param2.value;
+    }
+
     var ctx = document.getElementById("myChart");
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -86,7 +94,35 @@ function createChart(params) {
             scales: {
                 xAxes: [{
                     type: 'linear',
-                    position: 'bottom'
+                    position: 'bottom',
+                    ticks: {
+                        // Transform time to readable
+                        callback: function(value, index, values) {
+                            if(xtime) {
+                                if(xtime == 'created_at') {
+                                    value = convertToPrettyDateTime(value);
+                                } else {
+                                    value = convertToPrettyTime(value);
+                                }
+                            }
+                            return value;
+                        }
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        // Transform time to readable
+                        callback: function(value, index, values) {
+                            if(ytime) {
+                                if(ytime == 'created_at') {
+                                    value = convertToPrettyDateTime(value);
+                                } else {
+                                    value = convertToPrettyTime(value);
+                                }
+                            }
+                            return value;
+                        }
+                    }
                 }]
             }
         }
