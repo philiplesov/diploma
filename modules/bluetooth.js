@@ -22,6 +22,14 @@ exports.btSerial.on('found', function(address, name) {
     });
 });
 
+exports.btSerial.on('closed', function(address, name) {
+    console.log('Bluetooth connection closed');
+});
+
+exports.btSerial.on('failure', function(err) {
+    console.log(err);
+});
+
 var convertBtData = function(buffer) {
     bluetoothReadings.convertBtData(buffer);
 }

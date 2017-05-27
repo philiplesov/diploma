@@ -5,26 +5,38 @@ $(document).ready(function() {
 	socket.onopen = openSocket;
 	socket.onmessage = showData;
 
+	var htmlTemplate = "<div class='gps-reading'>DATA_HERE</div>";
+
 	function openSocket() {
-		readings.html("Socket open");
+		var prependHtml = htmlTemplate.replace("DATA_HERE", "Socket opened!");
+		readings.prepend(prependHtml);
 	}
 
 	function showData(result) {
-		// when the server returns, show the result in the div:
-		readings.html(result.data);
+		// when the server returns, show the result
+		$(".sk-circle").hide();
+		readings.children().first().fadeOut("slow");
+
+		var prependHtml = htmlTemplate.replace("DATA_HERE", result.data);
+		readings.prepend(prependHtml);
+		readings.children().first().delay(2500).fadeOut("slow");
 	}
 
 	$('#bltSwitch').click(function () {
+		var loader = $(".sk-circle");
+		var labelONOrOFF = $(this).children('.blt-switch-label').html();
 		if($(this).hasClass('btn-success')) {
 			socket.send('turn-on');
 			$(this).removeClass('btn-success');
 			$(this).addClass('btn-danger');
-			$(this).html('Turn Sensor OFF');
+			loader.show();
+			$(this).children('.blt-switch-label').html(labelONOrOFF.replace("ON", "OFF"));
 		} else {
 			socket.send('turn-off');
 			$(this).removeClass('btn-danger');
 			$(this).addClass('btn-success');
-			$(this).html('Turn Sensor ON');
+			loader.hide();
+			$(this).children('.blt-switch-label').html(labelONOrOFF.replace("OFF", "ON"));
 		}
 	});
 

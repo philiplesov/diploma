@@ -34,7 +34,9 @@ function processMessageFromWebSocket(message) {
             bluetooth.btSerial.inquire();
             return;
         case message == 'turn-off':
-            bluetooth.btSerial.close();
+            if(bluetooth.btSerial.isOpen()) {
+                bluetooth.btSerial.close();
+            }
             return;
         case message == 'test-turn-on':
             functions.setTestInterval();
