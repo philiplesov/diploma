@@ -50,6 +50,9 @@ function showData(result) {
 
     //set select values to charts' selects
     var selectValues = config.gpsTypes[serverReturn.type];
+    $('#selectParam1').find('option').remove();
+    $('#selectParam2').find('option').remove();
+    
     for (key in selectValues) {
         $('#selectParam1').append($("<option></option>").attr("value",selectValues[key].value).text(selectValues[key].name));
         $('#selectParam2').append($("<option></option>").attr("value",selectValues[key].value).text(selectValues[key].name));  
@@ -65,6 +68,10 @@ function createChart(params) {
 	// Check data and parse it to be given to Chart.js
     var data = [];
     for (key in serverData) {
+        if((typeof(serverData[key][params.param1.value]) == 'undefined' || serverData[key][params.param1.value] == null || serverData[key][params.param1.value] == "") || (typeof(serverData[key][params.param2.value]) == 'undefined' || serverData[key][params.param2.value] == null || serverData[key][params.param2.value] == "")) {
+            continue;
+        }
+
         var obj = {};
         if (isNaN(parseFloat(serverData[key][params.param1.value])) || !isFinite(serverData[key][params.param1.value]) || isNaN(parseFloat(serverData[key][params.param2.value])) || !isFinite(serverData[key][params.param2.value])) {
             console.log('not number');
