@@ -16,7 +16,7 @@ exports.convertToDecimal = function(nmeaFormat) {
     var posOfDot = nmeaFormat.indexOf(".");
     var degrees = parseFloat(nmeaFormat.substring(0, posOfDot-2));
     var minutes = parseFloat(nmeaFormat.substring(posOfDot-2));
-    console.log('lat ',nmeaFormat, 'deg: ', degrees, 'min: ', minutes);
+    //console.log('lat ',nmeaFormat, 'deg: ', degrees, 'min: ', minutes);
     return degrees + minutes/60;
 }
 

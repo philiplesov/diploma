@@ -21,16 +21,8 @@
 					"value": "latitude"
 				},
 				{
-					"name": "N/S",
-					"value": "north_south_indicator"
-				},
-				{
 					"name": "Longitude",
 					"value": "longitude"
-				},
-				{
-					"name": "E/W",
-					"value": "east_west_indicator"
 				},
 				{
 					"name": "Fixed Position",
