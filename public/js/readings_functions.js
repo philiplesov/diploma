@@ -28,6 +28,9 @@ function showData(result) {
     // Set global serverData to contain newest returned server data
     serverData = serverReturn.data;
 
+    // Define gmap Button Default template
+    var gmapDefaultButtonTemplate = "<a href='http://www.google.com/maps/place/lat,lng' target='_blank' class='gmapButton'></a>"
+
     var tableResults = [];
     for (var i in serverData) {
     	tableResults.push(JSON.parse(JSON.stringify(serverData[i])));
@@ -36,6 +39,11 @@ function showData(result) {
         }
     	if(tableResults[i].created_at) {
     		tableResults[i].created_at = makeDateTimePretty(tableResults[i].created_at);
+    	}
+    	if(tableResults[i].latitude && tableResults[i].longitude) {
+    		var gmapButtonTemplate = gmapDefaultButtonTemplate.replace("lat", tableResults[i].latitude);
+    		gmapButtonTemplate = gmapButtonTemplate.replace("lng", tableResults[i].longitude);
+    		tableResults[i]['gmap_button'] = gmapButtonTemplate;
     	}
     }
 
