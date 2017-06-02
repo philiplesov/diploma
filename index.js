@@ -9,7 +9,7 @@ var functions = init_module.functions;
 webSocket.wss.on('connection', handleConnection);
 
 function handleConnection(client) {
-    console.log("New Connection"); // you have a new client
+    console.log("New Connection"); // new client
     webSocket.connections.push(client); // add this client to the connections array
 
     client.on('message', function incoming(message) {
@@ -18,7 +18,7 @@ function handleConnection(client) {
     });
 
     client.on('close', function() { // when a client closes its connection
-        console.log("connection closed"); // print it out
+        console.log("Connection closed"); // print it out
         var position = webSocket.connections.indexOf(client); // get the client's position in the array
         webSocket.connections.splice(position, 1); // and delete it from the array
     });

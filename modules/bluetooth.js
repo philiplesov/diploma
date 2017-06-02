@@ -15,7 +15,7 @@ exports.btSerial.on('found', function(address, name) {
             console.log('cannot connect');
         });
 
-        // close the connection when you're ready
+        // close the connection when ready
         exports.btSerial.close();
     }, function() {
         console.log('found nothing');
