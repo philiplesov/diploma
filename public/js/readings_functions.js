@@ -27,7 +27,7 @@ function showData(result) {
 
     // Set global serverData to contain newest returned server data
     serverData = serverReturn.data;
-
+    
     // Define gmap Button Default template
     var gmapDefaultButtonTemplate = "<a href='http://www.google.com/maps/place/lat,lng' target='_blank' class='gmapButton'></a>"
 
@@ -46,7 +46,7 @@ function showData(result) {
     		tableResults[i]['gmap_button'] = gmapButtonTemplate;
     	}
     }
-
+    console.log(tableResults);
     // when the server returns, show the result in table
     var dynatable = $(readingsTable).dynatable({ 
         dataset: { records: tableResults } }, 

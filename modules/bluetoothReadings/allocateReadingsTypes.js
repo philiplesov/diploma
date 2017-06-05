@@ -47,4 +47,5 @@ function prepareDataGPRMC(gpsReadingContents) {
         	gpsReadingContents[5] = -Math.abs(gpsReadingContents[5]);
         }
     }
+    gpsReadingContents[7] ? gpsReadingContents[7] = parseFloat(gpsReadingContents[7]) : gpsReadingContents[7] = 0;
 }
