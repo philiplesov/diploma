@@ -33,20 +33,23 @@ function showData(result) {
 
     var tableResults = [];
     for (var i in serverData) {
-    	tableResults.push(JSON.parse(JSON.stringify(serverData[i])));
+        tableResults.push(JSON.parse(JSON.stringify(serverData[i])));
         if(tableResults[i].universal_time) {
             tableResults[i].universal_time = makeDateTimePretty(tableResults[i].universal_time);
         }
-    	if(tableResults[i].created_at) {
-    		tableResults[i].created_at = makeDateTimePretty(tableResults[i].created_at);
-    	}
-    	if(tableResults[i].latitude && tableResults[i].longitude) {
-    		var gmapButtonTemplate = gmapDefaultButtonTemplate.replace("lat", tableResults[i].latitude);
-    		gmapButtonTemplate = gmapButtonTemplate.replace("lng", tableResults[i].longitude);
-    		tableResults[i]['gmap_button'] = gmapButtonTemplate;
-    	}
+        if(tableResults[i].created_at) {
+            tableResults[i].created_at = makeDateTimePretty(tableResults[i].created_at);
+        }
+        if(tableResults[i].latitude && tableResults[i].longitude) {
+            var gmapButtonTemplate = gmapDefaultButtonTemplate.replace("lat", tableResults[i].latitude);
+            gmapButtonTemplate = gmapButtonTemplate.replace("lng", tableResults[i].longitude);
+            tableResults[i]['gmap_button'] = gmapButtonTemplate;
+        }
+        if(tableResults[i].date) {
+            tableResults[i].date = makeDateTimePretty(tableResults[i].date + 'd');
+        }
     }
-    console.log(tableResults);
+
     // when the server returns, show the result in table
     var dynatable = $(readingsTable).dynatable({ 
         dataset: { records: tableResults } }, 
@@ -71,9 +74,9 @@ function showData(result) {
 }
 
 function createChart(params) {
-	chartCount++;
+    chartCount++;
 
-	// Check data and parse it to be given to Chart.js
+    // Check data and parse it to be given to Chart.js
     var data = [];
     for (key in serverData) {
         if((typeof(serverData[key][params.param1.value]) == 'undefined' || serverData[key][params.param1.value] == null || serverData[key][params.param1.value] == "") || (typeof(serverData[key][params.param2.value]) == 'undefined' || serverData[key][params.param2.value] == null || serverData[key][params.param2.value] == "")) {
@@ -101,11 +104,11 @@ function createChart(params) {
 
     // Remove old charts if any
     if (chartCount > 1) {
-    	$(chartBaseSelector + (chartCount-1)).remove();
-    	$(".chartjs-hidden-iframe").remove();
+        $(chartBaseSelector + (chartCount-1)).remove();
+        $(".chartjs-hidden-iframe").remove();
 
-    	newChartTemplate = chartTemplate.replace("NO", chartCount);
-    	$("#chartsHolder").append(newChartTemplate);
+        newChartTemplate = chartTemplate.replace("NO", chartCount);
+        $("#chartsHolder").append(newChartTemplate);
     }
     
     var ctx = $(chartBaseSelector + chartCount);
@@ -132,7 +135,7 @@ function createChart(params) {
                         // Transform time to readable
                         callback: function(value, index, values) {
                             if (xtime) {
-                            	value = makeDateTimePretty(value);
+                                value = makeDateTimePretty(value);
                             }
                             return value;
                         }
@@ -143,7 +146,7 @@ function createChart(params) {
                         // Transform time to readable
                         callback: function(value, index, values) {
                             if (ytime) {
-                            	value = makeDateTimePretty(value);
+                                value = makeDateTimePretty(value);
                             }
                             return value;
                         }
@@ -151,27 +154,27 @@ function createChart(params) {
                 }]
             },
             tooltips: {
-            	enabled: true,
+                enabled: true,
                 mode: 'single',
                 callbacks: {
                     label: function(tooltipItems, data) { 
                         return '';
                     },
                     title: function(tooltipItems, data) {
-                    	var xLabel = tooltipItems[0].xLabel;
-                    	var yLabel = tooltipItems[0].yLabel;
+                        var xLabel = tooltipItems[0].xLabel;
+                        var yLabel = tooltipItems[0].yLabel;
 
-                    	if (xtime) {
+                        if (xtime) {
                             xLabel = makeDateTimePretty(xLabel);
                         }
                         if (ytime) {
-                        	yLabel = makeDateTimePretty(yLabel);
+                            yLabel = makeDateTimePretty(yLabel);
                         }
 
                         return xLabel + '  |  ' + yLabel;
                     }
                 }
-	        }
+            }
         }
     });
 
@@ -192,25 +195,26 @@ function toTimestamp(datetime) {
 }
 
 function makeDateTimePretty(datetime) {
-	datetime = datetime.toString();
+    console.log(datetime);
+    datetime = datetime.toString();
 
-	if (datetime.indexOf('.') > -1 || datetime.length == 6) {
-		return convertToPrettyTime(datetime);
-	}
+    if (datetime.indexOf('.') > -1 || datetime.length <= 7) {
+        return convertToPrettyTime(datetime);
+    }
 
-	return convertToPrettyDateTime(datetime)
+    return convertToPrettyDateTime(datetime)
 }
 
 function convertToPrettyTime(time) {
-	if (typeof time != 'string') {
-		time = time.toString();
-	}
+    if (typeof time != 'string') {
+        time = time.toString();
+    }
 
-	return time.substring(0,2) + ":" + time.substring(2,4) + ":" + time.substring(4,6);
+    return time.substring(6,7) == 'd' ? time.substring(0,2) + "/" + time.substring(2,4) + "/" + time.substring(4,6) : time.substring(0,2) + ":" + time.substring(2,4) + ":" + time.substring(4,6);
 }
 
 function convertToPrettyDateTime(datetime) {
-	var date = new Date(parseInt(datetime));
+    var date = new Date(parseInt(datetime));
 
     return date.toLocaleString("en-GB");
 }
