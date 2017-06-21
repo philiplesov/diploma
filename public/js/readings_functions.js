@@ -95,10 +95,10 @@ function createChart(params) {
 
     // Set flags if any Datetime fields in chart
     var xtime, ytime = false;
-    if (params.param1.value == 'created_at' || params.param1.value == 'universal_time') {
+    if (params.param1.value == 'created_at' || params.param1.value == 'universal_time' || params.param1.value == 'date') {
         xtime = params.param1.value;
     }
-    if (params.param2.value == 'created_at' || params.param2.value == 'universal_time') {
+    if (params.param2.value == 'created_at' || params.param2.value == 'universal_time' || params.param2.value == 'date') {
         ytime = params.param2.value;
     }
 
@@ -110,7 +110,7 @@ function createChart(params) {
         newChartTemplate = chartTemplate.replace("NO", chartCount);
         $("#chartsHolder").append(newChartTemplate);
     }
-    
+
     var ctx = $(chartBaseSelector + chartCount);
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -134,8 +134,11 @@ function createChart(params) {
                     ticks: {
                         // Transform time to readable
                         callback: function(value, index, values) {
+                            console.log(xtime, value);
                             if (xtime) {
-                                value = makeDateTimePretty(value);
+                                value = xtime != 'date' ? makeDateTimePretty(value) : makeDateTimePretty(parseInt(value)+'d');
+                            } else if (countDecimals(value) > 6) {
+                                value = value.toFixed(6);
                             }
                             return value;
                         }
@@ -146,7 +149,9 @@ function createChart(params) {
                         // Transform time to readable
                         callback: function(value, index, values) {
                             if (ytime) {
-                                value = makeDateTimePretty(value);
+                                value = ytime != 'date' ? makeDateTimePretty(value) : makeDateTimePretty(parseInt(value)+'d');
+                            } else if (countDecimals(value) > 6) {
+                                value = value.toFixed(6);
                             }
                             return value;
                         }
@@ -194,8 +199,7 @@ function toTimestamp(datetime) {
     return date.getTime();
 }
 
-function makeDateTimePretty(datetime) {
-    console.log(datetime);
+function makeDateTimePretty(datetime) { 
     datetime = datetime.toString();
 
     if (datetime.indexOf('.') > -1 || datetime.length <= 7) {
@@ -217,6 +221,11 @@ function convertToPrettyDateTime(datetime) {
     var date = new Date(parseInt(datetime));
 
     return date.toLocaleString("en-GB");
+}
+
+function countDecimals(value) {
+    if(Math.floor(value) === value) return 0;
+    return value.toString().split(".")[1].length || 0; 
 }
 
 $(document).ready(function() {
